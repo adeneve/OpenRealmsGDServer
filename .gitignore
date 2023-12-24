@@ -29,3 +29,6 @@ Server/*.translation
 Server/.mono/
 Server/data_*/
 Server/mono_crash.*.json
+
+#vscode
+.DS_Store
