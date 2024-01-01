@@ -23,6 +23,16 @@ func _process(_delta):
 	pass
 	
 	
+@rpc("any_peer", "call_remote", "reliable")
+func sendRSApubkey(publicKey):
+	# The server knows who sent the input.
+	print("received key: " + publicKey)
+	var sender_id = multiplayer.get_remote_sender_id()
+	print("from sender_id: " + str(sender_id))
+	# Process the input and affect game logic.
+	#now generate a random int, then rpc back to this sender
+	# 'sendEncryptedInt', store in dictionary (id, int)
+	# then we should expect 'DecryptInt', that matches dictionary entry
 	
 func _on_player_connected(id):
 	print("player connected with id: %s" % id)
