@@ -17,7 +17,18 @@ func _ready():
 func info(msg):
 	print(msg)
 
+const scn = preload("res://Playground.tscn")
 
+#send serialized 3d files to peer
+func sendResources(peer_id):
+	var gltd = GLTFDocument.new()
+	var gltfs = GLTFState.new()
+	#gltd.append_from_file("res://Playground.tscn",gltfs)
+	gltd.append_from_scene(scn.instantiate(),gltfs)
+	var byteArray = gltd.generate_buffer(gltfs)
+	_server.send(peer_id, byteArray)
+	print("resource sent")
+	
 # Server signals
 func _on_web_socket_server_client_connected(peer_id):
 	var peer: WebSocketPeer = _server.peers[peer_id]
@@ -33,7 +44,11 @@ func _on_web_socket_server_client_disconnected(peer_id):
 
 func _on_web_socket_server_message_received(peer_id, message):
 	info("Server received data from peer %d: %s" % [peer_id, message])
-	_server.send(-peer_id, "[%d] Says: %s" % [peer_id, message])
+	#_server.send(-peer_id, "[%d] Says: %s" % [peer_id, message])
+	match message:
+		"sendresources":
+			sendResources(peer_id)
+			
 
 
 # UI signals.
