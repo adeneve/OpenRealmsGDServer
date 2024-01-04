@@ -17,16 +17,45 @@ func _ready():
 func info(msg):
 	print(msg)
 
-const scn = preload("res://Playground.tscn")
+const scn = preload("res://scene.gltf")
 
 #send serialized 3d files to peer
 func sendResources(peer_id):
 	var gltd = GLTFDocument.new()
 	var gltfs = GLTFState.new()
-	#gltd.append_from_file("res://Playground.tscn",gltfs)
-	gltd.append_from_scene(scn.instantiate(),gltfs)
+	#gltd.append_from_file("res://scene.gltf",gltfs, 0, "")
+	gltd.append_from_file("res://scene.gltf",gltfs)
 	var byteArray = gltd.generate_buffer(gltfs)
-	_server.send(peer_id, byteArray)
+	#first try to use glfDocument to load the scene here
+	#locally at runtime
+	#then do the same but simulate breaking apart the
+	# array into buffer sizes and building it again
+	#if that all works, then go back to testing network
+	
+	# chop buffer up into 8k segments
+	#slice and send?
+	#print(byteArray.size())
+	#print(ArrayCompressed.size())
+	#add a 50k padding if we go over? test that
+	#adding padding of 0s is fine
+	print(byteArray.size())
+	var numPackets = (byteArray.size() / 64000) + 1
+	print(numPackets)
+	_server.send(peer_id, "packets " + str(numPackets))
+	await get_tree().create_timer(3).timeout
+	var sliceStart = 0
+	var sliceEnd = 64000
+	while sliceEnd <= byteArray.size():
+		var subPack = byteArray.slice(sliceStart, sliceEnd)
+		print(_server.peers[peer_id].get_current_outbound_buffered_amount())
+		_server.send(peer_id, subPack)
+		await get_tree().create_timer(0.15).timeout
+		if sliceEnd >= byteArray.size():
+			break
+		sliceStart += 64000
+		sliceEnd += 64000
+		if sliceEnd >= byteArray.size():
+			sliceEnd = byteArray.size()
 	print("resource sent")
 	
 # Server signals

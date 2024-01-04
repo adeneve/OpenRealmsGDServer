@@ -5,6 +5,9 @@ var MAX_CONNECTIONS:int = 30
 
 var RSAVerificationDict = {}
 
+
+const scn = preload("res://scene.gltf")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("setting up ENet server: port " + str(PORT))
@@ -15,6 +18,35 @@ func _ready():
 	if error:
 		return error
 	multiplayer.multiplayer_peer = peer
+	
+	
+	#testing
+	var gltd = GLTFDocument.new()
+	var gltfs = GLTFState.new()
+	var glfs2 = GLTFState.new()
+	gltd.append_from_file("res://scene.gltf", gltfs)
+	#gltd.append_from_scene(scn.instantiate(),gltfs)
+	var byteArray = gltd.generate_buffer(gltfs)
+	#works without fragmenting
+	#reconstruct with fragments 64k
+	var buf = PackedByteArray()
+	var start = 0
+	var end = 64000
+	while end <= byteArray.size():
+		var slice = byteArray.slice(start, end)
+		buf.append_array(slice)
+		if end == byteArray.size():
+			break
+		start += 64000
+		end += 64000
+		if end >= byteArray.size():
+			end = byteArray.size()
+			
+	print(buf.size())
+	print(byteArray.size())
+	gltd.append_from_buffer(buf, "", glfs2)
+	var node = gltd.generate_scene(glfs2)
+	add_child(node)
 
 	
 
