@@ -47,6 +47,7 @@ func _ready():
 	gltd.append_from_buffer(buf, "", glfs2)
 	var node = gltd.generate_scene(glfs2)
 	add_child(node)
+	addCollisionMesh(node)
 
 	
 
@@ -120,4 +121,17 @@ func _on_player_connected(id):
 	
 func _on_player_disconnected(id):
 	print("player disconnected with id: %s" % id)
+	
+	
+func addCollisionMesh(node):
+	for N in node.get_children():
+		if N.get_child_count() > 0:
+			print("["+N.get_name()+"]")
+			addCollisionMesh(N)
+		else:
+			# Do something
+			print("- "+N.get_name()+" type: " + N.get_class())
+			if N.get_class() == "MeshInstance3D":
+				var a = N as MeshInstance3D
+				a.create_trimesh_collision()
 

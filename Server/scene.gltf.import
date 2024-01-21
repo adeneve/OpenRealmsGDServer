@@ -29,6 +29,15 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path=""
-_subresources={}
+_subresources={
+"nodes": {
+"PATH:Sketchfab_model/root/GLTF_SceneRootNode/Plane_005_72/Object_155": {
+"generate/physics": true
+},
+"PATH:Sketchfab_model/root/GLTF_SceneRootNode/food_canister_carrot_001_2/Object_4": {
+"generate/physics": true
+}
+}
+}
 gltf/naming_version=1
 gltf/embedded_image_handling=1
