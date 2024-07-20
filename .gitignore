@@ -1,5 +1,5 @@
 # Godot 4+ specific ignores
-.godot/
+.godo
 
 # Godot-specific ignores
 .import/
@@ -8,27 +8,6 @@ export_presets.cfg
 
 # Imported translations (automatically generated from CSV files)
 *.translation
-
-# Mono-specific ignores
-.mono/
-data_*/
-mono_crash.*.json
-
-# Godot 4+ specific ignores
-Server/.godot/
-
-# Godot-specific ignores
-Server/.import/
-Server/export.cfg
-Server/export_presets.cfg
-
-# Imported translations (automatically generated from CSV files)
-Server/*.translation
-
-# Mono-specific ignores
-Server/.mono/
-Server/data_*/
-Server/mono_crash.*.json
 
 #vscode
 .DS_Store
