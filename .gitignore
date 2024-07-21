@@ -2,3 +2,4 @@
 .DS_Store
 
 ExpressSocketIOServer/node_modules
+Server/mainScene
