@@ -3,3 +3,7 @@
 
 ExpressSocketIOServer/node_modules
 Server/mainScene
+
+Server/.venv
+Server/__pycache__
+Server/Worlds
