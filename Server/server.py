@@ -17,9 +17,16 @@ def download_file(name):
         app.config['WORLDS_FOLDER'], name
     )
 
-@app.route("/get_texture_file_list/<username>/<world_name>")
-def get_texture_file_list(username, world_name):
+@app.route("/get_scene_texture_file_list/<username>/<world_name>")
+def get_scene_texture_file_list(username, world_name):
     path = "./"+ app.config['WORLDS_FOLDER'] + "/"+username+"/"+world_name+"/"+"mainScene/textures"
     if exists(path):
       return listdir(path)
+
+@app.route("/get_character_texture_file_list/<username>/<world_name>/<character_name>")
+def get_character_texture_file_list(username, world_name, character_name):
+    path = "./"+ app.config['WORLDS_FOLDER'] + "/"+username+"/"+world_name+"/characters/"+character_name+"/textures"
+    if exists(path):
+      return listdir(path)
     
+#TODO create a way for users to upload their own worlds
