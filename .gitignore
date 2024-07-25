@@ -7,3 +7,4 @@ Server/mainScene
 Server/.venv
 Server/__pycache__
 Server/Worlds
+Server/Characters
