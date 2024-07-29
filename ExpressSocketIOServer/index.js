@@ -8,7 +8,8 @@ const io = require("socket.io")(server, {
     origin: "*"
   }
 });
-const cors = require('cors')
+const cors = require('cors');
+const { SocketAddress } = require('net');
 
 
 app.use(cors())
@@ -21,12 +22,15 @@ var players_data = {}
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  console.log(socket.id)
+  players_data[socket.id] = {}
   socket.on('disconnect', () => {
     console.log('user disconnected');
+    delete players_data[socket.id]
   });
   socket.on('player_update', (data) => {
     console.log(data)
-    players_data[data.playerID] = data
+    players_data[socket.id] = data
     io.emit('all_players_update', players_data);
   })
 });
